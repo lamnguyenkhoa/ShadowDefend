@@ -20,8 +20,11 @@ public class ShadowDefend extends AbstractGame {
     private static final int TOTAL_LEVELS = 2;
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
-    private static int timeScale = 1;
+    private static double timeScale = 1;
     private static int money = 0;
+    private static int lives = 25;
+    private static boolean gameWon = false;
+    private static boolean placingTower = false;
     private static boolean waveInProgress = false;
     private static double tickCounter = 0;
     private static Level currentLevel;
@@ -82,11 +85,12 @@ public class ShadowDefend extends AbstractGame {
 
         // Draw
         currentLevel.update(input);
+        StatusPanel.draw(currentLevel.getCurrentWaveID(), timeScale, lives, gameWon, placingTower, waveInProgress);
 
     }
 
     /* Getters and Setters */
-    public static int getTimeScale() {
+    public static double getTimeScale() {
         return timeScale;
     }
 
@@ -98,6 +102,21 @@ public class ShadowDefend extends AbstractGame {
         ShadowDefend.waveInProgress = bool;
     }
 
+    public static Level getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public static void reduceLives(int amount) {
+        lives -= amount;
+    }
 }
 
 

@@ -149,6 +149,10 @@ public class Level {
         return enemyList;
     }
 
+    public int getCurrentWaveID() {
+        return currentWaveID;
+    }
+
     public void deleteFinishedEnemy() {
         //TODO: test Collection.removeIf()
         Iterator<Enemy> enemyIterator = enemyList.iterator();

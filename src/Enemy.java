@@ -42,7 +42,7 @@ public abstract class Enemy {
         double deltaY;
 
         Point nextPoint = path.get(currentPathPoint+1);
-        int timeScale = ShadowDefend.getTimeScale();
+        double timeScale = ShadowDefend.getTimeScale();
         double totalSpeed = speed * timeScale;
         double distance = sqrt(pow(nextPoint.x - position.x, 2) + pow(nextPoint.y - position.y, 2));
         // If shorter than totalSpeed, teleport it directly there
@@ -52,6 +52,7 @@ public abstract class Enemy {
             // If finished the path
             if (currentPathPoint+1 >= path.size()) {
                 finished = true;
+                ShadowDefend.reduceLives(penalty);
             }
             return;
         }
