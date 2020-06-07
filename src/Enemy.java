@@ -18,7 +18,9 @@ public abstract class Enemy {
     private int currentPathPoint;
     private Point position;
     private final List<Point> path;
-    private DrawOptions drawOptions;
+    private DrawOptions drawOptions = new DrawOptions();
+
+    //NOTE: Always calculateRotation before calculatePosition
 
     public Enemy(double speed, int health, int penalty, int reward, int currentPathPoint, Image img, Point position, List<Point> path) {
         this.speed = speed;
@@ -29,6 +31,10 @@ public abstract class Enemy {
         this.img = img;
         this.position = position;
         this.path = path;
+    }
+
+    public void draw() {
+        img.draw(position.x, position.y, drawOptions);
     }
 
     public void calculatePosition() { //NEED FIX A BIT
@@ -85,5 +91,9 @@ public abstract class Enemy {
 
     public void deathEvent() {
         ShadowDefend.addMoney(reward);
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

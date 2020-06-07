@@ -50,9 +50,6 @@ public class Level {
             ShadowDefend.loadNextLevel();
         }
 
-        drawLevel();
-
-        /*
         if (availableWaveEvent) {
             tickCounter += ShadowDefend.getTimeScale();
             if (currentWaveEvent.getEventType().equals("delay")) {
@@ -63,6 +60,7 @@ public class Level {
                 }
             } else {
                 // Type spawn enemy
+                // TODO: No delay after spawn last enemy
                 if ((tickCounter / FPS) * 1000 >= currentWaveEvent.getDelay()) {
                     if (currentWaveEvent.getQuantity() > 0) {
                         tickCounter = 0;
@@ -73,19 +71,27 @@ public class Level {
                 }
             }
         }
-         */
+        drawLevel();
+        deleteFinishedEnemy();
     }
 
     public void spawnEnemy(String enemyType) {
         //TODO: add 3 other types
         if (enemyType.equals("slicer")) {
             Enemy enemy = new RegularSlicer(0, spawnPoint, path);
+            enemyList.add(enemy);
         }
         currentWaveEvent.reduceQuantity(1);
     }
 
     public void drawLevel() {
+        //TODO: draw towers and projectiles
         tiledMap.draw(0, 0, 0, 0, WIDTH, HEIGHT);
+        for (Enemy enemy : enemyList) {
+            enemy.calculateRotation();
+            enemy.calculatePosition();
+            enemy.draw();
+        }
     }
 
     public void getNextWaveEvent() {
@@ -93,14 +99,14 @@ public class Level {
         This start each wave event (each line in the waves.txt)
          */
         // Check if there is any waves left
-        if (waveEventList.size() == 1) {
+        if (waveEventList.size() == 0) {
             levelFinished = true;
             return;
         }
         // Check if the next wave event has the same id,
         // then delete the old wave event
-        if (waveEventList.get(1).getId() == currentWaveID) {
-            currentWaveEvent = waveEventList.get(1);
+        if (waveEventList.get(0).getId() == currentWaveID) {
+            currentWaveEvent = waveEventList.get(0);
             waveEventList.remove(0);
             // Immediately spawn one
             if (currentWaveEvent.getEventType().equals("spawn")) {
@@ -109,6 +115,7 @@ public class Level {
         } else {
             // finished all wave events in current wave
             availableWaveEvent = false;
+            ShadowDefend.setWaveInProgress(false);
         }
     }
 
@@ -142,13 +149,13 @@ public class Level {
         return enemyList;
     }
 
-    public void deleteFinishedWaveEvent(int id) {
-        //TODO: test the Collection.removeIf()
-        Iterator<WaveEvent> waveEventIterator = waveEventList.iterator();
-        while (waveEventIterator.hasNext()) {
-            WaveEvent waveEvent = waveEventIterator.next();
-            if (waveEvent.getId() == id)
-                waveEventIterator.remove();
+    public void deleteFinishedEnemy() {
+        //TODO: test Collection.removeIf()
+        Iterator<Enemy> enemyIterator = enemyList.iterator();
+        while (enemyIterator.hasNext()) {
+            Enemy enemy = enemyIterator.next();
+            if (enemy.isFinished())
+                enemyIterator.remove();
         }
     }
 }

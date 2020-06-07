@@ -93,6 +93,11 @@ public class ShadowDefend extends AbstractGame {
     public static double getFPS() {
         return FPS;
     }
+
+    public static void setWaveInProgress(boolean bool) {
+        ShadowDefend.waveInProgress = bool;
+    }
+
 }
 
 

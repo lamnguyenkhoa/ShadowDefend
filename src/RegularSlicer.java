@@ -10,6 +10,13 @@ public class RegularSlicer extends Enemy {
     private static final int REWARD = 2;
     private static final Image IMG = new Image("res/images/slicer.png");
 
+    /**
+     *
+     * @param currentPathPoint description
+     * @param position
+     * @param path
+     */
+
     public RegularSlicer(int currentPathPoint, Point position, List<Point> path) {
         super(SPEED, HEALTH, PENALTY, REWARD, currentPathPoint, IMG, position, path);
     }
