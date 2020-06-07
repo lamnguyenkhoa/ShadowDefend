@@ -38,4 +38,8 @@ public class WaveEvent {
     public int getDelay() {
         return delay;
     }
+
+    public void reduceQuantity(int amount) {
+        quantity -= amount;
+    }
 }

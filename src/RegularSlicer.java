@@ -1,7 +1,6 @@
 import bagel.Image;
 import bagel.util.Point;
 
-import java.awt.*;
 import java.util.List;
 
 public class RegularSlicer extends Enemy {

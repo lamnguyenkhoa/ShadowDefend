@@ -39,10 +39,17 @@ public class ShadowDefend extends AbstractGame {
 
     public static void loadNextLevel() {
         currentLevelID++;
+        // Finished the game
+        if (currentLevelID > TOTAL_LEVELS) {
+            //TODO: Update status to "Winner!"
+            return;
+        }
+
         String mapSource = "res/levels/" + Integer.toString(currentLevelID) + ".tmx";
+        String levelSource = "res/levels/waves.txt";
         currentLevel = new Level(currentLevelID, mapSource, WIDTH, HEIGHT);
         try {
-            File waveFile = new File("res/levels/waves.txt");
+            File waveFile = new File(levelSource);
             Scanner scanner = new Scanner(waveFile);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -63,7 +70,8 @@ public class ShadowDefend extends AbstractGame {
         // Check input
         if (input.wasPressed(START_KEY) && !waveInProgress && currentLevel.getEnemyList().size()==0) {
             // Spawn a wave if current wave already finished AND no slicers left on the map
-
+            currentLevel.startNextWave();
+            waveInProgress = true;
         }
         if (input.wasPressed(SPEEDDOWN_KEY) && (timeScale > 1)) {
             timeScale--;
@@ -72,11 +80,18 @@ public class ShadowDefend extends AbstractGame {
             timeScale++;
         }
 
+        // Draw
+        currentLevel.update(input);
+
     }
 
     /* Getters and Setters */
     public static int getTimeScale() {
         return timeScale;
+    }
+
+    public static double getFPS() {
+        return FPS;
     }
 }
 

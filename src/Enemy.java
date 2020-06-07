@@ -5,8 +5,8 @@ import bagel.util.Point;
 
 import java.util.List;
 
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
+import static java.lang.Math.PI;
 
 public abstract class Enemy {
     private double speed;
@@ -66,6 +66,21 @@ public abstract class Enemy {
         }
         // Update slicer pos
         position = new Point(position.x + deltaX, position.y + deltaY);
+    }
+
+    public void calculateRotation() {
+        Point nextPoint = path.get(currentPathPoint+1);
+        double distance = sqrt(pow(nextPoint.x - position.x, 2) + pow(nextPoint.y - position.y, 2));
+        double radian = asin(abs(nextPoint.y - position.y)/distance);
+        if ((nextPoint.x < position.x) && (nextPoint.y < position.y)) // upper left quadrant
+            radian = PI - radian;
+        else if ((nextPoint.x <= position.x) && (nextPoint.y >= position.y)) // lower left quadrant
+            radian = radian + PI;
+        else if ((nextPoint.x > position.x) && (nextPoint.y > position.y) ) // lower right quadrant
+            radian = 2*PI - radian;
+
+        // because bagel rotation is clockwise and we calculated counterclockwise above
+        drawOptions.setRotation(-radian);
     }
 
     public void deathEvent() {
