@@ -23,6 +23,7 @@ public class Level {
     private int currentWaveID = 0;
     private WaveEvent currentWaveEvent;
     private final double FPS = ShadowDefend.getFPS();
+    private boolean startedWave = false;
     private boolean availableWaveEvent = false;
 
     public Level(int id, String mapSource, int width, int height) {
@@ -64,27 +65,37 @@ public class Level {
                 if ((tickCounter / FPS) * 1000 >= currentWaveEvent.getDelay()) {
                     if (currentWaveEvent.getQuantity() > 0) {
                         tickCounter = 0;
-                        spawnEnemy(currentWaveEvent.getEnemyType());
+                        spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path);
                     } else {
                         getNextWaveEvent();
                     }
                 }
             }
         }
-        drawLevel();
+        if (!availableWaveEvent && startedWave && enemyList.size() == 0) {
+            ShadowDefend.setWaveInProgress(false);
+            startedWave = false;
+        }
+        updateLevel();
         deleteFinishedEnemy();
     }
 
-    public void spawnEnemy(String enemyType) {
+    public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path) {
         //TODO: add 3 other types
+        Enemy enemy;
         if (enemyType.equals("slicer")) {
-            Enemy enemy = new RegularSlicer(0, spawnPoint, path);
-            enemyList.add(enemy);
+            enemy = new RegularSlicer(currentPathPoint, spawnPoint, path);
+        } else if (enemyType.equals("superslicer")) {
+            enemy = new SuperSlicer(currentPathPoint, spawnPoint, path);
+        } else {
+            // Error
+            enemy = null;
         }
+        enemyList.add(enemy);
         currentWaveEvent.reduceQuantity(1);
     }
 
-    public void drawLevel() {
+    public void updateLevel() {
         //TODO: draw towers and projectiles
         tiledMap.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         for (Enemy enemy : enemyList) {
@@ -110,12 +121,11 @@ public class Level {
             waveEventList.remove(0);
             // Immediately spawn one
             if (currentWaveEvent.getEventType().equals("spawn")) {
-                spawnEnemy(currentWaveEvent.getEnemyType());
+                spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path);
             }
         } else {
             // finished all wave events in current wave
             availableWaveEvent = false;
-            ShadowDefend.setWaveInProgress(false);
         }
     }
 
@@ -123,6 +133,7 @@ public class Level {
         currentWaveID++;
         availableWaveEvent = true;
         getNextWaveEvent();
+        startedWave = true;
         tickCounter = 0;
     }
 

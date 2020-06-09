@@ -94,7 +94,23 @@ public abstract class Enemy {
         ShadowDefend.addMoney(reward);
     }
 
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     public boolean isFinished() {
         return finished;
+    }
+
+    public int getCurrentPathPoint() {
+        return currentPathPoint;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public List<Point> getPath() {
+        return path;
     }
 }
