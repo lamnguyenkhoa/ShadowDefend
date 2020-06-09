@@ -98,6 +98,13 @@ public abstract class Enemy {
         this.finished = finished;
     }
 
+    public void reduceHealth(int amount) {
+        health -= amount;
+        if (health <= 0) {
+            finished = true;
+        }
+    }
+
     public boolean isFinished() {
         return finished;
     }

@@ -7,5 +7,28 @@ public abstract class Tower {
     private int price;
     private Image img;
     private Point position;
-    private DrawOptions drawOptions;
+    private DrawOptions drawOptions = new DrawOptions();
+
+    public Tower(boolean isActiveType, int price, Image img, Point position) {
+        this.isActiveType = isActiveType;
+        this.price = price;
+        this.img = img;
+        this.position = position;
+    }
+
+    public void update() {
+        draw();
+    }
+
+    public void draw() {
+        img.draw(position.x, position.y, drawOptions);
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setAngle(double angle) {
+        drawOptions.setRotation(angle);
+    }
 }

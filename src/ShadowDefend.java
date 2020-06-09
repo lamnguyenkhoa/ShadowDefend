@@ -21,7 +21,7 @@ public class ShadowDefend extends AbstractGame {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
     private static double timeScale = 1;
-    private static int money = 0;
+    private static int money = 500;
     private static int lives = 25;
     private static boolean gameWon = false;
     private static boolean placingTower = false;
@@ -86,6 +86,7 @@ public class ShadowDefend extends AbstractGame {
         // Draw
         currentLevel.update(input);
         StatusPanel.draw(currentLevel.getCurrentWaveID(), timeScale, lives, gameWon, placingTower, waveInProgress);
+        BuyPanel.draw(money);
 
     }
 
@@ -112,6 +113,10 @@ public class ShadowDefend extends AbstractGame {
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    public static int getMoney() {
+        return money;
     }
 
     public static void reduceLives(int amount) {

@@ -77,7 +77,7 @@ public class Level {
             startedWave = false;
         }
         updateLevel();
-        deleteFinishedEnemy();
+        cleanUp();
     }
 
     public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path) {
@@ -152,6 +152,10 @@ public class Level {
         waveEventList.add(newWaveEvent);
     }
 
+    public void addProjectile() {
+
+    }
+
     public List<Point> getPath() {
         return path;
     }
@@ -164,13 +168,20 @@ public class Level {
         return currentWaveID;
     }
 
-    public void deleteFinishedEnemy() {
+    public void cleanUp() {
         //TODO: test Collection.removeIf()
         Iterator<Enemy> enemyIterator = enemyList.iterator();
         while (enemyIterator.hasNext()) {
             Enemy enemy = enemyIterator.next();
             if (enemy.isFinished())
                 enemyIterator.remove();
+        }
+
+        Iterator<Projectile> projectileIterator = projectileList.iterator();
+        while (projectileIterator.hasNext()) {
+            Projectile projectile = projectileIterator.next();
+            if (projectile.isFinished())
+                projectileIterator.remove();
         }
     }
 }
