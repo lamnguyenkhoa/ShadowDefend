@@ -20,8 +20,8 @@ public class SuperSlicer extends Enemy {
         Point tmpPosition = this.getPosition();
         List<Point> tmpPath = this.getPath();
         super.deathEvent();
-        ShadowDefend.getCurrentLevel().spawnEnemy("slicer", tmpPathPoint, tmpPosition, tmpPath);
-        ShadowDefend.getCurrentLevel().spawnEnemy("slicer", tmpPathPoint, tmpPosition, tmpPath);
+        ShadowDefend.getCurrentLevel().spawnEnemy("slicer", tmpPathPoint, tmpPosition, tmpPath, true);
+        ShadowDefend.getCurrentLevel().spawnEnemy("slicer", tmpPathPoint, tmpPosition, tmpPath, true);
     }
 }
 

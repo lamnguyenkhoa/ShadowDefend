@@ -49,8 +49,8 @@ public class Tank extends Tower{
         // Shoot
         if (target != null) {
             Point targetPoint = target.getPosition();
-            this.setAngle(Math.atan2(targetPoint.y - this.getPosition().y, targetPoint.x - this.getPosition().x));
-            ShadowDefend.getCurrentLevel().addProjectile();
+            setAngle(Math.atan2(targetPoint.y - this.getPosition().y, targetPoint.x - this.getPosition().x) + Math.PI/2);
+            ShadowDefend.getCurrentLevel().addProjectile(new TankBullet(target, DAMAGE, PROJECTILE_IMG, getPosition()));
         }
     }
 

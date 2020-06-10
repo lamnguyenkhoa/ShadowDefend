@@ -65,22 +65,26 @@ public class Level {
                 if ((tickCounter / FPS) * 1000 >= currentWaveEvent.getDelay()) {
                     if (currentWaveEvent.getQuantity() > 0) {
                         tickCounter = 0;
-                        spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path);
-                    } else {
-                        getNextWaveEvent();
+                        spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path, false);
+                        // After finished spawn last enemy, immediately get to next wave event
+                        if (currentWaveEvent.getQuantity() == 0) {
+                            getNextWaveEvent();
+                        }
                     }
                 }
             }
         }
+        // The wave is completely finished
         if (!availableWaveEvent && startedWave && enemyList.size() == 0) {
             ShadowDefend.setWaveInProgress(false);
             startedWave = false;
+            ShadowDefend.changeMoney(150 + currentWaveID*100);
         }
         updateLevel();
         cleanUp();
     }
 
-    public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path) {
+    public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path, boolean fromDeathEvent) {
         //TODO: add 3 other types
         Enemy enemy;
         if (enemyType.equals("slicer")) {
@@ -92,16 +96,22 @@ public class Level {
             enemy = null;
         }
         enemyList.add(enemy);
-        currentWaveEvent.reduceQuantity(1);
+        if (!fromDeathEvent) {
+            currentWaveEvent.reduceQuantity(1);
+        }
     }
 
     public void updateLevel() {
         //TODO: draw towers and projectiles
         tiledMap.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         for (Enemy enemy : enemyList) {
-            enemy.calculateRotation();
-            enemy.calculatePosition();
-            enemy.draw();
+            enemy.update();
+        }
+        for (Tower tower : towerList) {
+            tower.update();
+        }
+        for (Projectile projectile : projectileList) {
+            projectile.update();
         }
     }
 
@@ -119,9 +129,9 @@ public class Level {
         if (waveEventList.get(0).getId() == currentWaveID) {
             currentWaveEvent = waveEventList.get(0);
             waveEventList.remove(0);
-            // Immediately spawn one
+            // Immediately spawn one enemy
             if (currentWaveEvent.getEventType().equals("spawn")) {
-                spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path);
+                spawnEnemy(currentWaveEvent.getEnemyType(), 0, spawnPoint, path, false);
             }
         } else {
             // finished all wave events in current wave
@@ -152,12 +162,12 @@ public class Level {
         waveEventList.add(newWaveEvent);
     }
 
-    public void addProjectile() {
-
+    public void addProjectile(Projectile projectile) {
+        projectileList.add(projectile);
     }
 
     public void addTower(Tower tower) {
-
+        towerList.add(tower);
     }
 
     public List<Point> getPath() {
@@ -166,6 +176,14 @@ public class Level {
 
     public List<Enemy> getEnemyList() {
         return enemyList;
+    }
+
+    public List<Tower> getTowerList() {
+        return towerList;
+    }
+
+    public List<Projectile> getProjectileList() {
+        return projectileList;
     }
 
     public int getCurrentWaveID() {

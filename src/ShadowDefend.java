@@ -87,7 +87,7 @@ public class ShadowDefend extends AbstractGame {
             timeScale++;
         }
         if (input.wasPressed(MouseButtons.LEFT)) {
-            BuyPanel.checkClick(input.getMousePosition());
+            BuyPanel.checkClick(money, input.getMousePosition());
         }
         if (input.wasPressed(MouseButtons.RIGHT)) {
             BuyPanel.deSelect();

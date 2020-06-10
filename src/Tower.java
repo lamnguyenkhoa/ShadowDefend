@@ -24,11 +24,17 @@ public abstract class Tower {
         img.draw(position.x, position.y, drawOptions);
     }
 
+    public void setAngle(double angle) {
+        drawOptions.setRotation(angle);
+    }
+
     public Point getPosition() {
         return position;
     }
 
-    public void setAngle(double angle) {
-        drawOptions.setRotation(angle);
+    public Image getImg() {
+        return img;
     }
+
+
 }

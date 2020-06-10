@@ -33,6 +33,12 @@ public abstract class Enemy {
         this.path = path;
     }
 
+    public void update() {
+        calculateRotation();
+        calculatePosition();
+        draw();
+    }
+
     public void draw() {
         img.draw(position.x, position.y, drawOptions);
     }
@@ -103,6 +109,7 @@ public abstract class Enemy {
         if (health <= 0) {
             finished = true;
         }
+        deathEvent();
     }
 
     public boolean isFinished() {
@@ -120,4 +127,5 @@ public abstract class Enemy {
     public List<Point> getPath() {
         return path;
     }
+
 }

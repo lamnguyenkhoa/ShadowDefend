@@ -15,6 +15,12 @@ public class TankBullet extends Projectile {
         this.DAMAGE = DAMAGE;
     }
 
+    @Override
+    public void update() {
+        super.update();
+        calculatePosition();
+    }
+
     public void calculatePosition() {
         double deltaX;
         double deltaY;
