@@ -137,8 +137,3 @@ public class ShadowDefend extends AbstractGame {
         return waveInProgress;
     }
 }
-
-
-//TODO:
-// -Improve slicer speed at curve;
-// -update according to feedback

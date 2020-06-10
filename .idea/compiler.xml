@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="lamkhoan-project-1" />
+        <module name="lamkhoan-project-2" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="lamkhoan-project-1" target="8" />
+      <module name="lamkhoan-project-2" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
