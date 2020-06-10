@@ -108,10 +108,17 @@ public class BuyPanel {
             }
         } else {
             // Buy/Place tower
-            // TODO: Add SuperTank and Airplane
+            // TODO: Add Airplane
+            if (!checkLocationValidity(mousePosition)) {
+                return;
+            }
             if (towerType.equals("tank")) {
                 ShadowDefend.changeMoney(-TANK_PRICE);
                 ShadowDefend.getCurrentLevel().addTower(new Tank(mousePosition));
+                deSelect();
+            } else if (towerType.equals("supertank")) {
+                ShadowDefend.changeMoney(-TANK_PRICE);
+                ShadowDefend.getCurrentLevel().addTower(new SuperTank(mousePosition));
                 deSelect();
             }
         }
@@ -119,19 +126,8 @@ public class BuyPanel {
 
     public static void drawAtMouse(String towerType, Point mousePosition) {
         // Check validity
-        TiledMap map = ShadowDefend.getCurrentLevel().getTiledMap();
-        if (map.hasProperty((int) mousePosition.x, (int) mousePosition.y, "blocked")) {
+        if (!checkLocationValidity(mousePosition)) {
             return;
-        }
-        if (mousePosition.y <= buyPanelBound || mousePosition.y >= statusPanelBound) {
-            return;
-        }
-        List<Tower> towerList = ShadowDefend.getCurrentLevel().getTowerList();
-        for (Tower tower: towerList) {
-            Rectangle tmpRect = tower.getImg().getBoundingBoxAt(tower.getPosition());
-            if (tmpRect.intersects(mousePosition)) {
-                return;
-            }
         }
 
         // Check type tower
@@ -142,6 +138,24 @@ public class BuyPanel {
         } else if (towerType.equals("airplane")) {
             AIRPLANE_IMG.draw(mousePosition.x, mousePosition.y);
         }
+    }
+
+    public static boolean checkLocationValidity(Point mousePosition) {
+        TiledMap map = ShadowDefend.getCurrentLevel().getTiledMap();
+        if (map.hasProperty((int) mousePosition.x, (int) mousePosition.y, "blocked")) {
+            return false;
+        }
+        if (mousePosition.y <= buyPanelBound || mousePosition.y >= statusPanelBound) {
+            return false;
+        }
+        List<Tower> towerList = ShadowDefend.getCurrentLevel().getTowerList();
+        for (Tower tower: towerList) {
+            Rectangle tmpRect = tower.getImg().getBoundingBoxAt(tower.getPosition());
+            if (tmpRect.intersects(mousePosition)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void deSelect() {

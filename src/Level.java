@@ -47,7 +47,7 @@ public class Level {
         If finished current wave event, delete it and start the next
          */
 
-        if (levelFinished) {
+        if (levelFinished && !ShadowDefend.isWaveInProgress()) {
             ShadowDefend.loadNextLevel();
         }
 
@@ -61,7 +61,6 @@ public class Level {
                 }
             } else {
                 // Type spawn enemy
-                // TODO: No delay after spawn last enemy
                 if ((tickCounter / FPS) * 1000 >= currentWaveEvent.getDelay()) {
                     if (currentWaveEvent.getQuantity() > 0) {
                         tickCounter = 0;
@@ -85,13 +84,16 @@ public class Level {
     }
 
     public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path, boolean fromDeathEvent) {
-        //TODO: add 3 other types
         Enemy enemy;
         if (enemyType.equals("slicer")) {
             enemy = new RegularSlicer(currentPathPoint, spawnPoint, path);
         } else if (enemyType.equals("superslicer")) {
             enemy = new SuperSlicer(currentPathPoint, spawnPoint, path);
-        } else {
+        } else if (enemyType.equals("megaslicer")) {
+            enemy = new MegaSlicer(currentPathPoint, spawnPoint, path);
+        } else if (enemyType.equals("apexslicer")) {
+            enemy = new ApexSlicer(currentPathPoint, spawnPoint, path);}
+        else {
             // Error
             enemy = null;
         }
@@ -102,7 +104,6 @@ public class Level {
     }
 
     public void updateLevel() {
-        //TODO: draw towers and projectiles
         tiledMap.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         for (Enemy enemy : enemyList) {
             enemy.update();
@@ -122,6 +123,7 @@ public class Level {
         // Check if there is any waves left
         if (waveEventList.size() == 0) {
             levelFinished = true;
+            availableWaveEvent = false;
             return;
         }
         // Check if the next wave event has the same id,

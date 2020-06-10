@@ -132,6 +132,10 @@ public class ShadowDefend extends AbstractGame {
     public static void setPlacingTower(boolean placingTower) {
         ShadowDefend.placingTower = placingTower;
     }
+
+    public static boolean isWaveInProgress() {
+        return waveInProgress;
+    }
 }
 
 

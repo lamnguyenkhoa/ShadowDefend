@@ -105,11 +105,16 @@ public abstract class Enemy {
     }
 
     public void reduceHealth(int amount) {
+        // Already dead :(
+        if (finished) {
+            return;
+        }
+        // Still alive~
         health -= amount;
         if (health <= 0) {
             finished = true;
+            deathEvent();
         }
-        deathEvent();
     }
 
     public boolean isFinished() {
