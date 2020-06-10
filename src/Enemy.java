@@ -52,7 +52,7 @@ public abstract class Enemy {
             // If finished the path
             if (currentPathPoint+1 >= path.size()) {
                 finished = true;
-                ShadowDefend.reduceLives(penalty);
+                ShadowDefend.changeLives(-penalty);
             }
             return;
         }
@@ -91,7 +91,7 @@ public abstract class Enemy {
     }
 
     public void deathEvent() {
-        ShadowDefend.addMoney(reward);
+        ShadowDefend.changeMoney(reward);
     }
 
     public void setFinished(boolean finished) {

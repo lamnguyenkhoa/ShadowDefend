@@ -64,8 +64,12 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
-    public static void addMoney(int amount) {
+    public static void changeMoney(int amount) {
         money += amount;
+    }
+
+    public static void changeLives(int amount) {
+        lives += amount;
     }
 
     @Override
@@ -82,11 +86,17 @@ public class ShadowDefend extends AbstractGame {
         if (input.wasPressed(SPEEDUP_KEY)) {
             timeScale++;
         }
+        if (input.wasPressed(MouseButtons.LEFT)) {
+            BuyPanel.checkClick(input.getMousePosition());
+        }
+        if (input.wasPressed(MouseButtons.RIGHT)) {
+            BuyPanel.deSelect();
+        }
 
         // Draw
         currentLevel.update(input);
         StatusPanel.draw(currentLevel.getCurrentWaveID(), timeScale, lives, gameWon, placingTower, waveInProgress);
-        BuyPanel.draw(money);
+        BuyPanel.draw(money, input.getMousePosition());
 
     }
 
@@ -119,8 +129,8 @@ public class ShadowDefend extends AbstractGame {
         return money;
     }
 
-    public static void reduceLives(int amount) {
-        lives -= amount;
+    public static void setPlacingTower(boolean placingTower) {
+        ShadowDefend.placingTower = placingTower;
     }
 }
 

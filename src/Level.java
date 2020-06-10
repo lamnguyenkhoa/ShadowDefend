@@ -156,6 +156,10 @@ public class Level {
 
     }
 
+    public void addTower(Tower tower) {
+
+    }
+
     public List<Point> getPath() {
         return path;
     }
@@ -166,6 +170,10 @@ public class Level {
 
     public int getCurrentWaveID() {
         return currentWaveID;
+    }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
     }
 
     public void cleanUp() {

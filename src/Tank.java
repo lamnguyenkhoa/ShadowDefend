@@ -11,7 +11,7 @@ public class Tank extends Tower{
     private static final int COOLDOWN = 1000; //microsecond
     private static final int PRICE = 250;
     private static final Image IMG = new Image("res/images/tank.png");
-    private static final Image PROJECTILE_IMG = new Image("res/iamges/tank_projectile.png");
+    private static final Image PROJECTILE_IMG = new Image("res/images/tank_projectile.png");
     private int cooldownCounter = 0;
     private static final double FPS = ShadowDefend.getFPS();
 

@@ -2,6 +2,7 @@ import bagel.DrawOptions;
 import bagel.Font;
 import bagel.Image;
 import bagel.util.Colour;
+import bagel.util.Point;
 
 public class StatusPanel {
     private static final Image BACKGROUND = new Image("res/images/statuspanel.png");
@@ -29,4 +30,5 @@ public class StatusPanel {
         }
         FONT.drawString("Lives: " + Integer.toString(lives), POS_X + 950, POS_Y + 18);
     }
+
 }
