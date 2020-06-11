@@ -26,6 +26,7 @@ public class BuyPanel {
     private static final int SUPERTANK_PRICE = 600;
     private static final int AIRPLANE_PRICE = 500;
     private static boolean mouseRenderOn = false;
+    private static boolean airplaneHorizontal = true;
     private static final DrawOptions greenText = new DrawOptions().setBlendColour(Colour.GREEN);
     private static final DrawOptions redText = new DrawOptions().setBlendColour(Colour.RED);
     private static final double buyPanelBound = BACKGROUND.getHeight();
@@ -43,19 +44,19 @@ public class BuyPanel {
         SUPERTANK_IMG.draw(LEFT_ITEM_OFFSET_H + ITEM_GAP, tmpTowerY);
         AIRPLANE_IMG.draw(LEFT_ITEM_OFFSET_H + ITEM_GAP*2, tmpTowerY);
         if (money >= TANK_PRICE) {
-            FONT_PRICE.drawString("$" + Integer.toString(TANK_PRICE), tmpPriceX, tmpPriceY, greenText);
+            FONT_PRICE.drawString("$" + TANK_PRICE, tmpPriceX, tmpPriceY, greenText);
         } else {
-            FONT_PRICE.drawString("$" + Integer.toString(TANK_PRICE), tmpPriceX, tmpPriceY, redText);
+            FONT_PRICE.drawString("$" + TANK_PRICE, tmpPriceX, tmpPriceY, redText);
         }
         if (money >= SUPERTANK_PRICE) {
-            FONT_PRICE.drawString("$" + Integer.toString(SUPERTANK_PRICE), tmpPriceX + ITEM_GAP, tmpPriceY, greenText);
+            FONT_PRICE.drawString("$" + SUPERTANK_PRICE, tmpPriceX + ITEM_GAP, tmpPriceY, greenText);
         } else {
-            FONT_PRICE.drawString("$" + Integer.toString(SUPERTANK_PRICE), tmpPriceX + ITEM_GAP, tmpPriceY, redText);
+            FONT_PRICE.drawString("$" + SUPERTANK_PRICE, tmpPriceX + ITEM_GAP, tmpPriceY, redText);
         }
         if (money >= AIRPLANE_PRICE) {
-            FONT_PRICE.drawString("$" + Integer.toString(AIRPLANE_PRICE), tmpPriceX + ITEM_GAP*2, tmpPriceY, greenText);
+            FONT_PRICE.drawString("$" + AIRPLANE_PRICE, tmpPriceX + ITEM_GAP*2, tmpPriceY, greenText);
         } else {
-            FONT_PRICE.drawString("$" + Integer.toString(AIRPLANE_PRICE), tmpPriceX + ITEM_GAP*2, tmpPriceY, redText);
+            FONT_PRICE.drawString("$" + AIRPLANE_PRICE, tmpPriceX + ITEM_GAP*2, tmpPriceY, redText);
         }
 
         // Draw key binds:
@@ -66,7 +67,7 @@ public class BuyPanel {
         FONT.drawString("K - Decrease Timescale", BACKGROUND.getWidth()/2 - 20, 90);
 
         // Draw money
-        FONT_MONEY.drawString("$" + Integer.toString(money), ShadowDefend.getWIDTH() - MONEY_OFFSET_H, MONEY_OFFSET_V);
+        FONT_MONEY.drawString("$" + money, ShadowDefend.getWIDTH() - MONEY_OFFSET_H, MONEY_OFFSET_V);
 
         // Draw tower at mouse location
         if (mouseRenderOn) {
@@ -108,54 +109,82 @@ public class BuyPanel {
             }
         } else {
             // Buy/Place tower
-            // TODO: Add Airplane
-            if (!checkLocationValidity(mousePosition)) {
+            if (notValidLocation(mousePosition)) {
                 return;
             }
-            if (towerType.equals("tank")) {
-                ShadowDefend.changeMoney(-TANK_PRICE);
-                ShadowDefend.getCurrentLevel().addTower(new Tank(mousePosition));
-                deSelect();
-            } else if (towerType.equals("supertank")) {
-                ShadowDefend.changeMoney(-TANK_PRICE);
-                ShadowDefend.getCurrentLevel().addTower(new SuperTank(mousePosition));
-                deSelect();
+            switch (towerType) {
+                case "tank":
+                    ShadowDefend.changeMoney(-TANK_PRICE);
+                    ShadowDefend.getCurrentLevel().addTower(new Tank(mousePosition));
+                    deSelect();
+                    break;
+                case "supertank":
+                    ShadowDefend.changeMoney(-SUPERTANK_PRICE);
+                    ShadowDefend.getCurrentLevel().addTower(new SuperTank(mousePosition));
+                    deSelect();
+                    break;
+                case "airplane":
+                    ShadowDefend.changeMoney(-AIRPLANE_PRICE);
+                    // Spawn outside map
+                    Point tmpPoint;
+                    if (airplaneHorizontal) {
+                        tmpPoint = new Point(-AIRPLANE_IMG.getHeight(), mousePosition.y);
+                    } else {
+                        tmpPoint = new Point(mousePosition.x, -AIRPLANE_IMG.getHeight());
+                    }
+                    ShadowDefend.getCurrentLevel().addTower(new Airplane(tmpPoint, airplaneHorizontal));
+                    deSelect();
+                    // Next airplane direction is switched
+                    airplaneHorizontal = !airplaneHorizontal;
+                    break;
             }
         }
     }
 
     public static void drawAtMouse(String towerType, Point mousePosition) {
         // Check validity
-        if (!checkLocationValidity(mousePosition)) {
+        if (notValidLocation(mousePosition)) {
             return;
         }
 
         // Check type tower
-        if (towerType.equals("tank")) {
-            TANK_IMG.draw(mousePosition.x, mousePosition.y);
-        } else if (towerType.equals("supertank")) {
-            SUPERTANK_IMG.draw(mousePosition.x, mousePosition.y);
-        } else if (towerType.equals("airplane")) {
-            AIRPLANE_IMG.draw(mousePosition.x, mousePosition.y);
+        switch (towerType) {
+            case "tank":
+                TANK_IMG.draw(mousePosition.x, mousePosition.y);
+                break;
+            case "supertank":
+                SUPERTANK_IMG.draw(mousePosition.x, mousePosition.y);
+                break;
+            case "airplane":
+                if (airplaneHorizontal) {
+                    AIRPLANE_IMG.draw(mousePosition.x, mousePosition.y, new DrawOptions().setRotation(Math.PI/2));
+                } else {
+                    AIRPLANE_IMG.draw(mousePosition.x, mousePosition.y, new DrawOptions().setRotation(Math.PI));
+                }
+                break;
         }
     }
 
-    public static boolean checkLocationValidity(Point mousePosition) {
+    public static boolean notValidLocation(Point mousePosition) {
         TiledMap map = ShadowDefend.getCurrentLevel().getTiledMap();
+        if (mousePosition.x > ShadowDefend.getWIDTH() || mousePosition.y > ShadowDefend.getHEIGHT() ||
+        mousePosition.x < 0 || mousePosition.y < 0) {
+            return  true;
+        }
         if (map.hasProperty((int) mousePosition.x, (int) mousePosition.y, "blocked")) {
-            return false;
+            return true;
         }
         if (mousePosition.y <= buyPanelBound || mousePosition.y >= statusPanelBound) {
-            return false;
+            return true;
         }
         List<Tower> towerList = ShadowDefend.getCurrentLevel().getTowerList();
         for (Tower tower: towerList) {
             Rectangle tmpRect = tower.getImg().getBoundingBoxAt(tower.getPosition());
             if (tmpRect.intersects(mousePosition)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public static void deSelect() {

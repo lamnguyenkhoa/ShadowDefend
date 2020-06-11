@@ -39,12 +39,11 @@ public class Level {
     public void update(Input input) {
         /*
         Check if the current level is finished yet
-        Draw the map
-        Update position and draw for each enemy
-        Update position and draw for each projectiles
-        Update position and draw for each tower
         Check and spawn enemy if condition met
         If finished current wave event, delete it and start the next
+        If finished current wave, signal to ShadowDefend and wait press S
+        Draw the map
+        Update position and draw for each enemy, projectile, tower
          */
 
         if (levelFinished && !ShadowDefend.isWaveInProgress()) {
@@ -85,17 +84,23 @@ public class Level {
 
     public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path, boolean fromDeathEvent) {
         Enemy enemy;
-        if (enemyType.equals("slicer")) {
-            enemy = new RegularSlicer(currentPathPoint, spawnPoint, path);
-        } else if (enemyType.equals("superslicer")) {
-            enemy = new SuperSlicer(currentPathPoint, spawnPoint, path);
-        } else if (enemyType.equals("megaslicer")) {
-            enemy = new MegaSlicer(currentPathPoint, spawnPoint, path);
-        } else if (enemyType.equals("apexslicer")) {
-            enemy = new ApexSlicer(currentPathPoint, spawnPoint, path);}
-        else {
-            // Error
-            enemy = null;
+        switch (enemyType) {
+            case "slicer":
+                enemy = new RegularSlicer(currentPathPoint, spawnPoint, path);
+                break;
+            case "superslicer":
+                enemy = new SuperSlicer(currentPathPoint, spawnPoint, path);
+                break;
+            case "megaslicer":
+                enemy = new MegaSlicer(currentPathPoint, spawnPoint, path);
+                break;
+            case "apexslicer":
+                enemy = new ApexSlicer(currentPathPoint, spawnPoint, path);
+                break;
+            default:
+                // Error
+                enemy = null;
+                break;
         }
         enemyList.add(enemy);
         if (!fromDeathEvent) {
@@ -197,19 +202,8 @@ public class Level {
     }
 
     public void cleanUp() {
-        //TODO: test Collection.removeIf()
-        Iterator<Enemy> enemyIterator = enemyList.iterator();
-        while (enemyIterator.hasNext()) {
-            Enemy enemy = enemyIterator.next();
-            if (enemy.isFinished())
-                enemyIterator.remove();
-        }
-
-        Iterator<Projectile> projectileIterator = projectileList.iterator();
-        while (projectileIterator.hasNext()) {
-            Projectile projectile = projectileIterator.next();
-            if (projectile.isFinished())
-                projectileIterator.remove();
-        }
+        enemyList.removeIf(Enemy::isFinished);
+        projectileList.removeIf(Projectile::isFinished);
+        towerList.removeIf(Tower::isFinished);
     }
 }

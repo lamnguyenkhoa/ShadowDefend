@@ -32,6 +32,8 @@ public class ShadowDefend extends AbstractGame {
 
     public static void main(String[] args) {
         // Create a new instance of game and run
+        //TODO: Write Javadoc
+        // Test the game
         new ShadowDefend().run();
     }
 
@@ -42,9 +44,10 @@ public class ShadowDefend extends AbstractGame {
 
     public static void loadNextLevel() {
         currentLevelID++;
+        money = 5000;
         // Finished the game
         if (currentLevelID > TOTAL_LEVELS) {
-            //TODO: Update status to "Winner!"
+            gameWon = true;
             return;
         }
 
@@ -65,15 +68,20 @@ public class ShadowDefend extends AbstractGame {
     }
 
     public static void changeMoney(int amount) {
+        //TODO: Check if money earned is correct
         money += amount;
     }
 
     public static void changeLives(int amount) {
         lives += amount;
+        if (lives <=0) {
+            Window.close();
+        }
     }
 
     @Override
     protected void update(Input input) {
+
         // Check input
         if (input.wasPressed(START_KEY) && !waveInProgress && currentLevel.getEnemyList().size()==0) {
             // Spawn a wave if current wave already finished AND no slicers left on the map

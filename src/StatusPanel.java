@@ -13,11 +13,11 @@ public class StatusPanel {
 
     public static void draw(int waveID, double timeScale, int lives, boolean gameWon, boolean placingTower, boolean waveInProgress) {
         BACKGROUND.drawFromTopLeft(POS_X, POS_Y);
-        FONT.drawString("Wave: " + Integer.toString(waveID), POS_X + 12, POS_Y + 18);
+        FONT.drawString("Wave: " + waveID, POS_X + 12, POS_Y + 18);
         if (timeScale > 1) {
-            FONT.drawString("Time Scale: " + Double.toString(timeScale), POS_X + 200, POS_Y + 18, greenText);
+            FONT.drawString("Time Scale: " + timeScale, POS_X + 200, POS_Y + 18, greenText);
         } else {
-            FONT.drawString("Time Scale: " + Double.toString(timeScale), POS_X + 200, POS_Y + 18);
+            FONT.drawString("Time Scale: " + timeScale, POS_X + 200, POS_Y + 18);
         }
         if (gameWon) {
             FONT.drawString("Status: Winner!", POS_X + 450, POS_Y + 18);
@@ -28,7 +28,7 @@ public class StatusPanel {
         } else {
             FONT.drawString("Status: Awaiting Start", POS_X + 450, POS_Y + 18);
         }
-        FONT.drawString("Lives: " + Integer.toString(lives), POS_X + 950, POS_Y + 18);
+        FONT.drawString("Lives: " + lives, POS_X + 950, POS_Y + 18);
     }
 
 }

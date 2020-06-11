@@ -22,6 +22,7 @@ public class TankBullet extends Projectile {
     }
 
     public void calculatePosition() {
+        //TODO: Change hitbox to bounding box instead
         double deltaX;
         double deltaY;
         Point position = this.getPosition();
