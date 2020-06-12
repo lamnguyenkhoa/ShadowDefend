@@ -79,6 +79,7 @@ public class Level {
             startedWave = false;
             ShadowDefend.changeMoney(150 + currentWaveID*100);
         }
+        spawnQueueEnemy();
         updateLevel();
         cleanUp();
     }
@@ -107,6 +108,13 @@ public class Level {
         if (!fromDeathEvent) {
             currentWaveEvent.reduceQuantity(1);
         }
+    }
+
+    public void spawnQueueEnemy() {
+        for (Enemy enemy : queueEnemyList) {
+            spawnEnemy(enemy.getName(), enemy.getCurrentPathPoint(), enemy.getPosition(), enemy.getPath(), true);
+        }
+        queueEnemyList.clear();
     }
 
     public void updateLevel() {
@@ -168,6 +176,10 @@ public class Level {
                     data[3], Integer.parseInt(data[4]));
         }
         waveEventList.add(newWaveEvent);
+    }
+
+    public void addSplitEnemy(Enemy enemy) {
+        queueEnemyList.add(enemy);
     }
 
     public void addProjectile(Projectile projectile) {

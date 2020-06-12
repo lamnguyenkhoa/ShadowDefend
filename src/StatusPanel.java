@@ -28,7 +28,7 @@ public class StatusPanel {
         } else {
             FONT.drawString("Status: Awaiting Start", POS_X + 450, POS_Y + 18);
         }
-        FONT.drawString("Lives: " + lives, POS_X + 950, POS_Y + 18);
+        FONT.drawString("Lives: " + lives, POS_X + 925, POS_Y + 18);
     }
 
 }

@@ -16,7 +16,6 @@ public class Explosive extends Projectile {
 
     @Override
     public void update() {
-        //TODO: Fix concurrentModificationException
         super.update();
         timerCounter += ShadowDefend.getTimeScale();
         if (timerCounter/ShadowDefend.getFPS() >= TIMER) {

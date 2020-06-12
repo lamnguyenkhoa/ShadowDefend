@@ -20,9 +20,11 @@ public class ShadowDefend extends AbstractGame {
     private static final int TOTAL_LEVELS = 2;
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
+    private static final int DEFAULT_MONEY = 500;
+    private static final int DEFAULT_LIVES = 25;
     private static double timeScale = 1;
-    private static int money = 500;
-    private static int lives = 25;
+    private static int money = DEFAULT_MONEY;
+    private static int lives = DEFAULT_LIVES;
     private static boolean gameWon = false;
     private static boolean placingTower = false;
     private static boolean waveInProgress = false;
@@ -44,7 +46,8 @@ public class ShadowDefend extends AbstractGame {
 
     public static void loadNextLevel() {
         currentLevelID++;
-        money = 500;
+        money = DEFAULT_MONEY;
+        lives = DEFAULT_LIVES;
         // Finished the game
         if (currentLevelID > TOTAL_LEVELS) {
             gameWon = true;

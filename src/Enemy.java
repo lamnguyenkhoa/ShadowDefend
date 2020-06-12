@@ -20,10 +20,12 @@ public abstract class Enemy {
     private Point position;
     private final List<Point> path;
     private DrawOptions drawOptions = new DrawOptions();
+    private final String name;
 
     //NOTE: Always calculateRotation before calculatePosition
 
-    public Enemy(double speed, int health, int penalty, int reward, int currentPathPoint, Image img, Point position, List<Point> path) {
+    public Enemy(String name, double speed, int health, int penalty, int reward, int currentPathPoint, Image img, Point position, List<Point> path) {
+        this.name = name;
         this.speed = speed;
         this.health = health;
         this.penalty = penalty;
@@ -140,5 +142,9 @@ public abstract class Enemy {
 
     public Image getImg() {
         return img;
+    }
+
+    public String getName() {
+        return name;
     }
 }
