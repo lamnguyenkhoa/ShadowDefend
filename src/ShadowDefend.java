@@ -44,7 +44,7 @@ public class ShadowDefend extends AbstractGame {
 
     public static void loadNextLevel() {
         currentLevelID++;
-        money = 5000;
+        money = 500;
         // Finished the game
         if (currentLevelID > TOTAL_LEVELS) {
             gameWon = true;

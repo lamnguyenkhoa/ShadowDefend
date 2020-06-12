@@ -1,6 +1,7 @@
 import bagel.DrawOptions;
 import bagel.Image;
 import bagel.util.Point;
+import bagel.util.Rectangle;
 
 
 import java.util.List;
@@ -133,4 +134,11 @@ public abstract class Enemy {
         return path;
     }
 
+    public Rectangle getHitbox() {
+        return img.getBoundingBoxAt(position);
+    }
+
+    public Image getImg() {
+        return img;
+    }
 }

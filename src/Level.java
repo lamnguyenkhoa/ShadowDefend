@@ -15,6 +15,7 @@ public class Level {
     private boolean levelFinished = false;
     private List<Tower> towerList = new ArrayList<>();
     private List<Enemy> enemyList = new ArrayList<>();
+    private List<Enemy> queueEnemyList = new ArrayList<>();
     private List<Projectile> projectileList = new ArrayList<>();
     private List<WaveEvent> waveEventList = new ArrayList<>();
     private final int WIDTH;

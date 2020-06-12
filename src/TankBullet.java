@@ -1,5 +1,6 @@
 import bagel.Image;
 import bagel.util.Point;
+import bagel.util.Rectangle;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
@@ -21,8 +22,13 @@ public class TankBullet extends Projectile {
         calculatePosition();
     }
 
+    public void hitEnemy() {
+        TARGET.reduceHealth(DAMAGE);
+        setFinished(true);
+    }
+
+
     public void calculatePosition() {
-        //TODO: Change hitbox to bounding box instead
         double deltaX;
         double deltaY;
         Point position = this.getPosition();
@@ -32,11 +38,11 @@ public class TankBullet extends Projectile {
         double totalSpeed = SPEED * timeScale;
         double distance = sqrt(pow(target.x - position.x, 2) + pow(target.y - position.y, 2));
         // If shorter than totalSpeed, teleport it directly there
+        // This is direct hit into the center of enemy hitbox
         if (distance <= totalSpeed) {
             position = new Point(target.x, target.y);
             setPosition(position);
-            setFinished(true);
-            TARGET.reduceHealth(DAMAGE);
+            hitEnemy();
             return;
         }
         // Else do normal
@@ -56,7 +62,12 @@ public class TankBullet extends Projectile {
         }
 
         // Update bullet position
+        // Check if it hit the enemy hitbox
         position = new Point(position.x + deltaX, position.y + deltaY);
         setPosition(position);
+        Rectangle hitbox = TARGET.getHitbox();
+        if (hitbox.intersects(position)) {
+            hitEnemy();
+        }
     }
 }

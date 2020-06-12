@@ -36,7 +36,8 @@ public class SuperTank extends Tower{
 
         // Search the closest enemy
         for (Enemy enemy : enemyList) {
-            double tmpDistance = this.getPosition().distanceTo(enemy.getPosition());
+            // Estimated distance from the hitbox of enemy to this tank center
+            double tmpDistance = this.getPosition().distanceTo(enemy.getPosition()) - enemy.getImg().getWidth()/2;
             if (tmpDistance <= RADIUS) {
                 if (tmpDistance < maxDistance || maxDistance == -1) {
                     maxDistance = tmpDistance;
