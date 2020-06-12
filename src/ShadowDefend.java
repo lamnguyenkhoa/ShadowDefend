@@ -1,12 +1,8 @@
 import bagel.*;
-import bagel.map.TiledMap;
-import bagel.util.Point;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
 import java.util.Scanner;
 
 public class ShadowDefend extends AbstractGame {
@@ -28,7 +24,6 @@ public class ShadowDefend extends AbstractGame {
     private static boolean gameWon = false;
     private static boolean placingTower = false;
     private static boolean waveInProgress = false;
-    private static double tickCounter = 0;
     private static Level currentLevel;
     private static int currentLevelID = 0;
 
