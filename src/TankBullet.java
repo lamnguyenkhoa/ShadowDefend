@@ -10,6 +10,13 @@ public class TankBullet extends Projectile {
     private final Enemy TARGET;
     private final int DAMAGE;
 
+    /**
+     * Create a new instance of TankBullet
+     * @param TARGET   Enemy class. Represent the enemy that this bullet is moving toward
+     * @param DAMAGE   how much damage the bullet will inflict on the enemy when hit
+     * @param IMG      the image used to draw the bullet on map
+     * @param position the x and y-coordinate on the map (in pixel)
+     */
     public TankBullet(Enemy TARGET, int DAMAGE, Image IMG, Point position) {
         super(IMG, position);
         this.TARGET = TARGET;
@@ -22,12 +29,18 @@ public class TankBullet extends Projectile {
         calculatePosition();
     }
 
+    /**
+     * If in contact with the enemy hitbox, reduce the enemy's health and remove the bullet from the game.
+     */
     public void hitEnemy() {
         TARGET.reduceHealth(DAMAGE);
         setFinished(true);
     }
 
-
+    /**
+     * Determine the bullet position in the enxt frame / update() call. If it within the enemy hitbox, run the
+     * hitEnemy() function.
+     */
     public void calculatePosition() {
         double deltaX;
         double deltaY;

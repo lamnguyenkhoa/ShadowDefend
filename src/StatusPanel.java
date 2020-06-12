@@ -11,6 +11,15 @@ public class StatusPanel {
     private static final double POS_Y = ShadowDefend.getHEIGHT() - BACKGROUND.getHeight();
     private static final DrawOptions greenText = new DrawOptions().setBlendColour(Colour.GREEN);
 
+    /**
+     * Draw the status panel at the bottom of the game screen.
+     * @param waveID         the number of the current wave.
+     * @param timeScale      how fast the game is compared to normal.
+     * @param lives          how many lives the player has left
+     * @param gameWon        whether the game is won or not
+     * @param placingTower   whether the player is placing a tower
+     * @param waveInProgress whether a wave is in progress (enemies wait to be spawned or have enemies left on the map)
+     */
     public static void draw(int waveID, double timeScale, int lives, boolean gameWon, boolean placingTower, boolean waveInProgress) {
         BACKGROUND.drawFromTopLeft(POS_X, POS_Y);
         FONT.drawString("Wave: " + waveID, POS_X + 12, POS_Y + 18);

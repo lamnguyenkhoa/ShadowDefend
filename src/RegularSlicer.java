@@ -11,9 +11,13 @@ public class RegularSlicer extends Enemy {
     private static final int REWARD = 2;
     private static final Image IMG = new Image("res/images/slicer.png");
 
+    /**
+     * Create a new instance of regular slicer.
+     * @param currentPathPoint integer represent the current point on the path
+     * @param position         the x and y-coordinate in the map (pixel)
+     * @param path             a list of point that determine the path that this instance will move
+     */
     public RegularSlicer(int currentPathPoint, Point position, List<Point> path) {
         super(NAME, SPEED, HEALTH, PENALTY, REWARD, currentPathPoint, IMG, position, path);
     }
-
-
 }

@@ -10,10 +10,18 @@ public class Explosive extends Projectile {
     private static final int TIMER = 2;
     private int timerCounter = 0;
 
+    /**
+     * Create a new instance of Explosive
+     * @param position the x and y-coordinate on the map (in pixel)
+     */
     public Explosive(Point position) {
         super(IMG, position);
     }
 
+    /**
+     * After enough time passed, it will calculate this explosive's distance to other enemies. If enemies are within in
+     * effect radius, they will be inflicted with damage. The explosive then removed from the game.
+     */
     @Override
     public void update() {
         super.update();

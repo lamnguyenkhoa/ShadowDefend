@@ -24,6 +24,20 @@ public abstract class Enemy {
 
     //NOTE: Always calculateRotation before calculatePosition
 
+    /**
+     * Create a new instance of destructible enemy, which will grant reward if killed and will reduce lives if managed
+     * to reach the finish.
+     * name, speed, health, penalty and reward are constant that it will get from its children class.
+     * @param name             type of enemy
+     * @param speed            how many pixel it move each frame / update() call
+     * @param health           its survivability
+     * @param penalty          how much it will damage your lives if it managed to the finish line
+     * @param reward           how much money you will get if you killed it in time
+     * @param currentPathPoint integer represent the current point on the path
+     * @param img              the image that will graphically represent this enemy
+     * @param position         the x and y-coordinate on the map (in pixel)
+     * @param path             a list of point that determine the path that this instance will move
+     */
     public Enemy(String name, double speed, int health, int penalty, int reward, int currentPathPoint, Image img, Point position, List<Point> path) {
         this.name = name;
         this.speed = speed;
@@ -46,7 +60,10 @@ public abstract class Enemy {
         img.draw(position.x, position.y, drawOptions);
     }
 
-    public void calculatePosition() { //NEED FIX A BIT
+    /**
+     * Take into account the timescale and calculate the position of this instance in the next frame and update it.
+     */
+    public void calculatePosition() {
         double deltaX;
         double deltaY;
 
@@ -84,6 +101,9 @@ public abstract class Enemy {
         position = new Point(position.x + deltaX, position.y + deltaY);
     }
 
+    /**
+     * Calculate the rotation angle of this instance in the next frame and update it. Use radian.
+     */
     public void calculateRotation() {
         Point nextPoint = path.get(currentPathPoint+1);
         double distance = sqrt(pow(nextPoint.x - position.x, 2) + pow(nextPoint.y - position.y, 2));
@@ -99,6 +119,11 @@ public abstract class Enemy {
         drawOptions.setRotation(-radian);
     }
 
+    /**
+     * This event run when this enemy get killed.
+     * By default, a enemy's death will reward the player with some money.
+     *
+     */
     public void deathEvent() {
         ShadowDefend.changeMoney(reward);
     }
@@ -107,6 +132,11 @@ public abstract class Enemy {
         this.finished = finished;
     }
 
+    /**
+     * Reduce the health of this enemy. If equal or lower than zero, the enemy will be considered dead and will be
+     * removed from the game.
+     * @param amount integer determine how much health reduced
+     */
     public void reduceHealth(int amount) {
         // Already dead :(
         if (finished) {

@@ -14,10 +14,17 @@ public class SuperTank extends Tower{
     private int cooldownCounter = 0;
     private static final double FPS = ShadowDefend.getFPS();
 
+    /**
+     * Create a new instance of SuperTank.
+     * @param position the x and y-coordinate of the tank on the map (in pixel)
+     */
     public SuperTank(Point position) {
         super(IS_TYPE_ACTIVE, PRICE, IMG, position);
     }
 
+    /**
+     * Determine whether the tank is off cooldown and ready to shoot.
+     */
     @Override
     public void update() {
         super.update();
@@ -28,6 +35,10 @@ public class SuperTank extends Tower{
         }
     }
 
+    /**
+     * Function that tell the the tank to shoot at the closest enemy. It has a cooldown and can not shoot while in
+     * cooldown period.
+     */
     public void shoot() {
         // Shoot the nearest slicer
         List<Enemy> enemyList = ShadowDefend.getCurrentLevel().getEnemyList();

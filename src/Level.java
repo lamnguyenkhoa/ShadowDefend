@@ -27,6 +27,14 @@ public class Level {
     private boolean startedWave = false;
     private boolean availableWaveEvent = false;
 
+    /**
+     * Create a new instance of Level. This is the play-field of the game where enemies moving, towers are placed and
+     * bullets flying.
+     * @param id        an integer used to identify the map
+     * @param mapSource the location that contain the map file .tmx
+     * @param width     the width of the game screen (in pixel)
+     * @param height    the height of the game screen (in pixel)
+     */
     public Level(int id, String mapSource, int width, int height) {
         // source format: "res/levels/1.tmx"
         this.id = id;
@@ -40,11 +48,11 @@ public class Level {
     public void update(Input input) {
         /*
         Check if the current level is finished yet
-        Check and spawn enemy if condition met
-        If finished current wave event, delete it and start the next
-        If finished current wave, signal to ShadowDefend and wait press S
+        Check and spawn enemies that are from the wave if conditions met
+        If finished current wave event, delete it and start the next wave event
+        If finished current wave, signal to ShadowDefend and wait to press S
         Draw the map
-        Update position and draw for each enemy, projectile, tower
+        Update position and draw each enemy, projectile, tower
          */
 
         if (levelFinished && !ShadowDefend.isWaveInProgress()) {
@@ -84,6 +92,14 @@ public class Level {
         cleanUp();
     }
 
+    /**
+     * Spawn an enemy in the map. If enemy spawned by killing other higher tier enemy, use the spawnQueueEnemy() instead.
+     * @param enemyType        string name of the type of enemy
+     * @param currentPathPoint integer represent the current point on the path
+     * @param spawnPoint       x and y-coordinate of where to spawn enemy on the map (in pixel)
+     * @param path             a list of point that determine the path that this instance will move
+     * @param fromDeathEvent   information about whether this enemy spawned by killing another enemy
+     */
     public void spawnEnemy(String enemyType, int currentPathPoint, Point spawnPoint, List<Point> path, boolean fromDeathEvent) {
         Enemy enemy;
         switch (enemyType) {
@@ -110,6 +126,9 @@ public class Level {
         }
     }
 
+    /**
+     * Use this option to add enemies which are create by the death higher tier enemies.
+     */
     public void spawnQueueEnemy() {
         for (Enemy enemy : queueEnemyList) {
             spawnEnemy(enemy.getName(), enemy.getCurrentPathPoint(), enemy.getPosition(), enemy.getPath(), true);
@@ -117,6 +136,9 @@ public class Level {
         queueEnemyList.clear();
     }
 
+    /**
+     * Call the update() function of these objects: Enemy, Tower and Projectile
+     */
     public void updateLevel() {
         tiledMap.draw(0, 0, 0, 0, WIDTH, HEIGHT);
         for (Enemy enemy : enemyList) {
@@ -130,11 +152,14 @@ public class Level {
         }
     }
 
+    /**
+     * Run this after the previous wave event is finished
+     */
     public void getNextWaveEvent() {
         /*
         This start each wave event (each line in the waves.txt)
          */
-        // Check if there is any waves left
+        // Check if there is any waves left. If not, level is finished
         if (waveEventList.size() == 0) {
             levelFinished = true;
             availableWaveEvent = false;
@@ -155,6 +180,9 @@ public class Level {
         }
     }
 
+    /**
+     * Run this after a wave has finished and the START_WAVE key was pressed.
+     */
     public void startNextWave() {
         currentWaveID++;
         availableWaveEvent = true;
@@ -163,6 +191,11 @@ public class Level {
         tickCounter = 0;
     }
 
+    /**
+     * Function used to read information from a string to create new WaveEvent object that store information about each
+     * wave vent.
+     * @param line string that contain necessary information
+     */
     public void addWaveEvent(String line) {
         WaveEvent newWaveEvent;
 

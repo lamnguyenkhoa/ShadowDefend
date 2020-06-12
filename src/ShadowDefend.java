@@ -34,8 +34,7 @@ public class ShadowDefend extends AbstractGame {
 
     public static void main(String[] args) {
         // Create a new instance of game and run
-        //TODO: Write Javadoc
-        // Test the game
+        // TODO: Test the game
         new ShadowDefend().run();
     }
 
@@ -44,6 +43,11 @@ public class ShadowDefend extends AbstractGame {
         loadNextLevel();
     }
 
+    /**
+     * Load the next level. Use this when all waves in a level are finished. By default, it is assumed there is only one
+     * waves.txt that contain information about enemies in each wave and the files contain information for each level are
+     * in "~/res/levels/" folder and have the format (level_id).tmx.
+     */
     public static void loadNextLevel() {
         currentLevelID++;
         money = DEFAULT_MONEY;
@@ -70,11 +74,19 @@ public class ShadowDefend extends AbstractGame {
         }
     }
 
+    /**
+     * Change the player's money
+     * @param amount an integer determine the change. Positive integer mean gain money, negative mean loss money
+     */
     public static void changeMoney(int amount) {
         //TODO: Check if money earned is correct
         money += amount;
     }
 
+    /**
+     * Change the player's lives. If lost all lives, the game end.
+     * @param amount an integer determine the change. Positive integer mean gain lives, negative mean loss lives
+     */
     public static void changeLives(int amount) {
         lives += amount;
         if (lives <=0) {
@@ -84,9 +96,13 @@ public class ShadowDefend extends AbstractGame {
 
     @Override
     protected void update(Input input) {
-
+        // TODO: The game has a glitch that flash the map if press S after win
         // Check input
         if (input.wasPressed(START_KEY) && !waveInProgress && currentLevel.getEnemyList().size()==0) {
+            // Do nothing if the game is won and over
+            if (gameWon) {
+                return;
+            }
             // Spawn a wave if current wave already finished AND no slicers left on the map
             currentLevel.startNextWave();
             waveInProgress = true;

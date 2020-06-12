@@ -75,7 +75,14 @@ public class BuyPanel {
         }
     }
 
-
+    /**
+     * If haven't clicked on any tower image in the buy panel, it will check if this left click is valid or not. If this
+     * left click valid (clicked on images that represent different types of towers), it will select that tower type.
+     * If already selected a tower type, it will check whether you have enough money to buy it. If you have enough, then
+     * it will place the tower at the current mouse location (if this position is valid).
+     * @param money         how much money you currently have
+     * @param mousePosition an x and y-coordinate of current mouse position (in pixel)
+     */
     public static void checkClick(int money, Point mousePosition) {
         if (!mouseRenderOn) {
             // Choose tower
@@ -141,6 +148,12 @@ public class BuyPanel {
         }
     }
 
+    /**
+     * Render an image that represent the tower that you are going to buy at the mouse location. It will not draw
+     * if the location is not valid.
+     * @param towerType     string name of the tower's type
+     * @param mousePosition an x and y-coordinate of current mouse position (in pixel)
+     */
     public static void drawAtMouse(String towerType, Point mousePosition) {
         // Check validity
         if (notValidLocation(mousePosition)) {
@@ -167,16 +180,21 @@ public class BuyPanel {
 
     public static boolean notValidLocation(Point mousePosition) {
         TiledMap map = ShadowDefend.getCurrentLevel().getTiledMap();
+
+        // If mouse outside game window
         if (mousePosition.x > ShadowDefend.getWIDTH() || mousePosition.y > ShadowDefend.getHEIGHT() ||
         mousePosition.x < 0 || mousePosition.y < 0) {
             return  true;
         }
+        // If the current map tile has blocked property
         if (map.hasProperty((int) mousePosition.x, (int) mousePosition.y, "blocked")) {
             return true;
         }
+        // If current mouse position is in status panel or buy panel
         if (mousePosition.y <= buyPanelBound || mousePosition.y >= statusPanelBound) {
             return true;
         }
+        // Default case
         List<Tower> towerList = ShadowDefend.getCurrentLevel().getTowerList();
         for (Tower tower: towerList) {
             Rectangle tmpRect = tower.getImg().getBoundingBoxAt(tower.getPosition());

@@ -7,6 +7,11 @@ public abstract class Projectile {
     private Point position;
     private boolean finished = false;
 
+    /**
+     * Create a new instance of Projectile.
+     * @param img      image that used to draw the projectile on map
+     * @param position the x and y-coordinate on the map (in pixel)
+     */
     public Projectile(Image img, Point position) {
         this.img = img;
         this.position = position;
